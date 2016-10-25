@@ -129,6 +129,7 @@ AC_ARG_ENABLE([evdev],
 	[enable_evdev="yes"])
 
 # Linux & Unix Options
+
 AC_ARG_ENABLE([xkb],
 	AS_HELP_STRING([--without-xkb], [Disable X Keyboard Extension (default: enabled)]),
 	[enable_xkb="$enableval"],
@@ -138,7 +139,7 @@ AC_ARG_ENABLE([xt],
 	AS_HELP_STRING([--without-xt], [Disable X Toolkit Intrinsics (default: enabled)]),
 	[enable_xt="$enableval"],
 	[enable_xt="yes"])
-
+	
 AC_ARG_ENABLE([xf86misc],
 	AS_HELP_STRING([--with-xf86misc], [Enable XFree86-Misc X Extension (default: disabled)]),
 	[enable_xf86misc="$enableval"],
@@ -263,6 +264,16 @@ AS_IF(
 		LIBS="$XTST_LIBS $LIBS"
 		#CFLAGS="$XTST_CFLAGS $CFLAGS"
 		REQUIRE="$REQUIRE xtst"
+		
+		PKG_CHECK_MODULES([XI], [xi])
+		LIBS="$XI_LIBS $LIBS"
+		#CFLAGS="$XI_CFLAGS $CFLAGS"
+		REQUIRE="$REQUIRE xi"
+		
+		PKG_CHECK_MODULES([UDEV], [libudev])
+		LIBS="$UDEV_LIBS $LIBS"
+		CFLAGS="$UDEV_CFLAGS $CFLAGS"
+		REQUIRE="$REQUIRE libudev"
 
 		# Check for XRecord.
 		AC_CHECK_LIB([Xtst], [XRecordQueryVersion], [],
@@ -272,7 +283,7 @@ AS_IF(
 		AC_CHECK_HEADERS([X11/extensions/record.h], [],
 			[AC_MSG_ERROR([XRecord extention header could not be found!])],
 			[#include <X11/Xlib.h>])
-
+		
 		# Evdev is only available on Linux.
 		AS_IF([test "x$has_evdev" = "x1"], [
 			AS_IF([test "x$enable_evdev" = "xyes"], [
@@ -351,7 +362,7 @@ AS_IF(
 				DEMO_CFLAGS="$PTHREAD_CFLAGS $CFLAGS"
 			])
 		])
-
+				
 		LDFLAGS="$LDFLAGS -Wl,--no-undefined"
 	],
 	[test "x$backend" = "xwindows"], [

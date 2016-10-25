@@ -1585,7 +1585,7 @@ uint16_t keycode_to_scancode(KeyCode keycode) {
 	return scancode;
 }
 
-KeyCode scancode_to_keycode(uint16_t scancode) {
+KeyCode scancode_to_keycode(int scancode) {
 	KeyCode keycode = 0x0000;
 
 	#if defined(USE_EVDEV) && defined(USE_XKB)
