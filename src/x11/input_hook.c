@@ -535,18 +535,7 @@ UIOHOOK_API int hook_run() {
 				}
 			}
 
-			struct timeval tv;
-			gettimeofday(&tv, NULL);
-
-			struct timespec ts;
-			ts.tv_sec = time(NULL) + timesleep / 1000;
-			ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timesleep % 1000);
-			ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
-			ts.tv_nsec %= (1000 * 1000 * 1000);
-
 			pthread_mutex_lock(&hook_xrecord_mutex);
-			pthread_cond_timedwait(&hook_xrecord_cond, &hook_xrecord_mutex,
-					&ts);
 			XFreeEventData(display, cookie);
 		}
 
