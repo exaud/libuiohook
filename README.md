@@ -2,6 +2,7 @@ libuiohook
 ==========
 
 A multi-platform C library to provide global input/ouput hooking from userland.
+This custom fork developed by Exaud has extended NativeKeyEvent that also identifies the input device name.
 
 ## Compiling
 Prerequisites: autotools, pkg-config, libtool, gcc, clang or msys2/mingw32
